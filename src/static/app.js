@@ -31,6 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedTheme === "dark") {
     document.documentElement.setAttribute("data-theme", "dark");
     darkModeToggle.textContent = "☀️";
+  } else {
+    darkModeToggle.textContent = "🌙";
   }
   darkModeToggle.addEventListener("click", () => {
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
