@@ -569,6 +569,12 @@ document.addEventListener("DOMContentLoaded", () => {
         `
         }
       </div>
+      <div class="share-buttons">
+        <span class="share-label">Share:</span>
+        <button class="share-btn share-twitter" data-activity="${name}" title="Share on X (Twitter)" aria-label="Share on X (Twitter)">𝕏</button>
+        <button class="share-btn share-whatsapp" data-activity="${name}" title="Share on WhatsApp" aria-label="Share on WhatsApp">💬</button>
+        <button class="share-btn share-copy" data-activity="${name}" title="Copy link" aria-label="Copy link">🔗</button>
+      </div>
     `;
 
     // Add click handlers for delete buttons
@@ -587,7 +593,36 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // Add click handlers for share buttons
+    activityCard.querySelector(".share-twitter").addEventListener("click", () => shareActivity(name, "twitter"));
+    activityCard.querySelector(".share-whatsapp").addEventListener("click", () => shareActivity(name, "whatsapp"));
+    activityCard.querySelector(".share-copy").addEventListener("click", () => shareActivity(name, "copy"));
+
     activitiesList.appendChild(activityCard);
+  }
+
+  // Function to share an activity on social platforms
+  function shareActivity(name, platform) {
+    const pageUrl = `${window.location.origin}${window.location.pathname}`;
+    const shareText = `Check out "${name}" at Mergington High School! Join this extracurricular activity: `;
+
+    if (platform === "twitter") {
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`;
+      window.open(twitterUrl, "_blank", "noopener,noreferrer");
+    } else if (platform === "whatsapp") {
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText + pageUrl)}`;
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    } else if (platform === "copy") {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(pageUrl).then(() => {
+          showMessage("Link copied to clipboard!", "success");
+        }).catch(() => {
+          showMessage(`Copy this link: ${pageUrl}`, "info");
+        });
+      } else {
+        showMessage(`Copy this link: ${pageUrl}`, "info");
+      }
+    }
   }
 
   // Event listeners for search and filter
